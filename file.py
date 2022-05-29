@@ -33,48 +33,55 @@ print(greet + name)
 
 # print(contents)
 
-srcFolder = "/Users/admin/Documents/Test Files"
+srcFolder = "/Users/admin/Downloads"
 documentsDir = "/Users/admin/Documents/Test Files/Documents"
 picturesDir = "/Users/admin/Documents/Test Files/Pictures"
 moviesDir = "/Users/admin/Documents/Test Files/Movies"
 miscDir = "/Users/admin/Documents/Test Files/Misc"
 
-list = os.listdir(srcFolder)
+def isDoc(fileExt):
+  if fileExt == ".txt" or fileExt == ".pdf" or fileExt == ".xlsx" or fileExt == ".epub" or fileExt == ".docx":
+    return True
 
-for file in list:
-  fileExt = PurePosixPath(file).suffix
-  isDir = os.path.isdir(srcFolder + "/" + file)
-  isDoc = fileExt == ".txt"
+def isVideo(fileExt):
+  #many movie downloads will be in a folder - need to handle this.
+  if fileExt == ".mp4" or fileExt == ".mkv":
+    return True
 
-  if isDir:
-    continue
+def isImage(fileExt):
+  if fileExt == ".jpg" or fileExt == ".png" or fileExt == ".heic":
+    return True
 
-  if isDoc:
-    print("file is a document")
-    # os.rename(srcFolder + "/" + file, documentsDir + "/" + file)
-    continue
+def arrangeFiles():
+  list = os.listdir(srcFolder)
 
+  for file in list:
+    isDir = os.path.isdir(srcFolder + "/" + file)
+    fileExt = PurePosixPath(file).suffix.lower()
 
-  if fileExt == ".jpg" or fileExt == ".JPG":
-    print("file is an image")
-    # os.rename(srcFolder + "/" + file, picturesDir + "/" + file)
-    continue
+    if isDir:
+      continue
 
-  if fileExt == ".mp4":
-    print("file is a video")
-    # os.rename(srcFolder + "/" + file, moviesDir + "/" + file)
-    continue
-
-  else:
-    print("file is not recognized")
-    print(file)
-    # os.rename(srcFolder + "/" + file, miscDir + "/" + file)
+    if isDoc(fileExt):
+      # print("file is a document")
+      # os.rename(srcFolder + "/" + file, documentsDir + "/" + file)
+      continue
 
 
+    if isImage(fileExt):
+      # print("file is an image")
+      # os.rename(srcFolder + "/" + file, picturesDir + "/" + file)
+      continue
+
+    if isVideo(fileExt):
+      # print("file is a video")
+      # os.rename(srcFolder + "/" + file, moviesDir + "/" + file)
+      continue
+
+    else:
+      print("file is not recognized")
+      print(file)
+      os.rename(srcFolder + "/" + file, miscDir + "/" + file)
 
 
-  # Get the source directory
-  # Get each respective target directory
-  # Get all the files
-  # Iterate through all the files
-  # Dependent on file extension, move file to correct target dir 
+arrangeFiles()
